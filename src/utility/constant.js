@@ -1,0 +1,1 @@
+export const ENV = 'https://api.exchangeratesapi.io/'
