@@ -22,19 +22,8 @@ class LineChart extends Component {
             width = orgWidth - margin.left - margin.right,
             height = orgHeight - margin.top - margin.bottom;
 
-        data.forEach((d) => {
-            d.date = +d.date;
-            d.amount = +d.amount;
-        });
-
-        // const xScale = d3.scaleTime()
-        //     .domain([
-        //         new Date(data[0].date),
-        //         new Date(data[data.length - 1].date)
-        //     ])
-        //     .range([0, width]);
-        const xScale = d3.scaleLinear()
-            .domain([d3.min(data, d => d.date), d3.max(data, d => d.date)])
+        const xScale = d3.scaleUtc()
+            .domain(d3.extent(data, d => d.date))
             .range([0, width]);
         const yScale = d3.scaleLinear()
             .domain([0, d3.max(data, d => d.amount)])
@@ -46,8 +35,7 @@ class LineChart extends Component {
 
         const xAxis = d3.axisBottom()
             .scale(xScale)
-        // .tickFormat(d => d + '-A');
-        // .tickFormat(d3.timeFormat("%m-%Y"));
+            .tickFormat(d3.timeFormat("%d-%m"));
         const yAxis = d3.axisLeft()
             .scale(yScale)
 

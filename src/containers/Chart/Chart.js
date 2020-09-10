@@ -9,17 +9,11 @@ class ChartContainer extends React.Component {
         timeRange: 'week',
         otherCurrency: 'USD',
         chartdata: [
-            // { date: '9 - 2 - 2020', amount: 1.1861 },
-            // { date: '9 - 3 - 2020', amount: 1.1813 },
-            // { date: '9 - 4 - 2020', amount: 1.1842 },
-            // { date: '9 - 5 - 2020', amount: 1.1824 },
-            // { date: '9 - 6 - 2020', amount: 1.1785 }
-
-            { date: 2, amount: 80 },
-            { date: 3, amount: 140 },
-            { date: 4, amount: 60 },
-            { date: 5, amount: 90 },
-            { date: 6, amount: 100 }
+            { date: new Date('9-2-2020'), amount: 80 },
+            { date: new Date('9-3-2020'), amount: 140 },
+            { date: new Date('9-4-2020'), amount: 60 },
+            { date: new Date('9-5-2020'), amount: 90 },
+            { date: new Date('9-6-2020'), amount: 100 }
         ]
     }
 
@@ -79,7 +73,7 @@ class ChartContainer extends React.Component {
             <div className="chart-page">
                 <h2 className="page-title">Chart</h2>
 
-                <div className="alert alert-light">Your preferred currency is {preferredCurrency}</div>
+                <div className="alert alert-info">Your preferred currency is {preferredCurrency}</div>
                 <form>
                     <div className="row">
                         <div className="form-group col-3">
