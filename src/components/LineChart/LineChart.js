@@ -15,8 +15,13 @@ class LineChart extends Component {
     }
 
     createchart() {
-        const node = this.node;
         const { orgWidth, orgHeight, data } = this.props;
+        const node = this.node;
+
+        // First clean up the svg, so when update happens there's no previous data is present
+        d3.select(node)
+            .selectAll("g")
+            .remove();
 
         const margin = { top: 20, right: 20, bottom: 50, left: 50 },
             width = orgWidth - margin.left - margin.right,
@@ -26,7 +31,7 @@ class LineChart extends Component {
             .domain(d3.extent(data, d => d.date))
             .range([0, width]);
         const yScale = d3.scaleLinear()
-            .domain([0, d3.max(data, d => d.amount)])
+            .domain([d3.min(data, d => d.amount), d3.max(data, d => d.amount)])
             .range([height, 0]);
 
         const valueline = d3.line()
@@ -35,6 +40,7 @@ class LineChart extends Component {
 
         const xAxis = d3.axisBottom()
             .scale(xScale)
+            .ticks(5)
             .tickFormat(d3.timeFormat("%d-%m"));
         const yAxis = d3.axisLeft()
             .scale(yScale)

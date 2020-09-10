@@ -16,14 +16,12 @@ class ConversionsContainer extends React.Component {
     }
 
     covertHandler = () => {
-        console.log(this.state);
         const preferredCurrency = localStorage.getItem('currency');
         const { amount, otherCurrency } = this.state;
 
         fetch(`${ENV}latest?base=${preferredCurrency}&symbols=${otherCurrency}`)
             .then(res => res.json())
             .then(results => {
-                console.log(results);
                 const factor = results.rates[otherCurrency];
                 this.setState({
                     result: (amount * factor).toFixed(2)
@@ -35,7 +33,7 @@ class ConversionsContainer extends React.Component {
     render() {
         const { amount, otherCurrency, result } = this.state;
         const preferredCurrency = localStorage.getItem('currency');
-        debugger
+
         return (
             <div className="conversions-page">
                 <h2 className="page-title">Conversions</h2>
