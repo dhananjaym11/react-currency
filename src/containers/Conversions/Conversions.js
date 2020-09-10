@@ -4,7 +4,7 @@ import { ENV } from "../../utility/constant";
 
 class ConversionsContainer extends React.Component {
     state = {
-        ammount: 0,
+        amount: 0,
         otherCurrency: 'USD',
         result: 0
     }
@@ -18,7 +18,7 @@ class ConversionsContainer extends React.Component {
     covertHandler = () => {
         console.log(this.state);
         const preferredCurrency = localStorage.getItem('currency');
-        const { ammount, otherCurrency } = this.state;
+        const { amount, otherCurrency } = this.state;
 
         fetch(`${ENV}latest?base=${preferredCurrency}&symbols=${otherCurrency}`)
             .then(res => res.json())
@@ -26,41 +26,46 @@ class ConversionsContainer extends React.Component {
                 console.log(results);
                 const factor = results.rates[otherCurrency];
                 this.setState({
-                    result: (ammount * factor).toFixed(2)
+                    result: (amount * factor).toFixed(2)
                 })
             })
             .catch(error => console.log(error));
     }
 
     render() {
-        const { ammount, otherCurrency, result } = this.state;
+        const { amount, otherCurrency, result } = this.state;
         const preferredCurrency = localStorage.getItem('currency');
-
+        debugger
         return (
-            <div>
-                <h2>Conversions</h2>
+            <div className="conversions-page">
+                <h2 className="page-title">Conversions</h2>
 
                 <form>
-                    <div className="form-group">
-                        <label>Enter ammount (in {preferredCurrency})</label>
-                        <input className="form-control" type="text" name="ammount" onChange={this.changeHandler} value={ammount} />
-                    </div>
-                    <div className="form-group">
-                        <label>Select other currency</label>
-                        <select className="form-control" onChange={this.changeHandler} name="otherCurrency" defaultValue={otherCurrency}>
-                            <option val="USD">USD</option>
-                            <option val="EUR">EUR</option>
-                            <option val="GBP">GBP</option>
-                        </select>
-                    </div>
-                    <div>
-                        <button className="btn btn-primary" type="button" onClick={this.covertHandler}>Convert</button>
+                    <div className="row">
+                        <div className="form-group col-3">
+                            <label>Enter amount (in {preferredCurrency})</label>
+                            <input className="form-control" type="text" name="amount" onChange={this.changeHandler} value={amount} />
+                        </div>
+                        <div className="form-group col-3">
+                            <label>Select other currency</label>
+                            <select className="form-control" onChange={this.changeHandler} name="otherCurrency" defaultValue={otherCurrency}>
+                                <option val="USD">USD</option>
+                                <option val="EUR">EUR</option>
+                                <option val="GBP">GBP</option>
+                            </select>
+                        </div>
+                        <div className="form-group col-2">
+                            <label>&nbsp;</label>
+                            <button className="btn btn-primary" type="button" onClick={this.covertHandler}>Convert</button>
+                        </div>
+                        {result ?
+                            <div className="form-group col-3">
+                                <label>Result:</label>
+                                <h5 className="alert alert-success">{result}</h5>
+                            </div> : null
+                        }
                     </div>
                 </form>
-
-                {result &&
-                    <h5>Result: {result}</h5>
-                }
             </div>
         )
     }

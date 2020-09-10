@@ -18,3 +18,21 @@ ol, ul {
   margin: 0;
   list-style: none;
 }
+
+.btn {
+  font-size: 1.2rem;
+  padding: 5px 10px;
+  min-width: 90px;
+}
+
+.form-control {
+  font-size: 1.2rem;
+}
+
+.form-group label {
+  display: block;
+}
+
+.page-title {
+  margin-bottom: 15px;
+}

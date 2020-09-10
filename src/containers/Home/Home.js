@@ -27,18 +27,20 @@ class HomeContainer extends React.Component {
 
     render() {
         return (
-            <div>
-                <div className="form-group">
-                    <h3>Choose a preferred currency</h3>
-                    <select className="form-control" onChange={this.changeHandler} value={this.state.currency}>
-                        <option val="INR">INR</option>
-                        <option val="USD">USD</option>
-                        <option val="EUR">EUR</option>
-                        <option val="GBP">GBP</option>
-                    </select>
-                </div>
-                <div>
-                    <button className="btn btn-primary" type="button" onClick={this.saveHandler}>Save</button>
+            <div className="home-page">
+                <h2 className="page-title">Choose a preferred currency</h2>
+                <div className="row">
+                    <div className="form-group col-3">
+                        <select className="form-control" onChange={this.changeHandler} value={this.state.currency}>
+                            <option val="INR">INR</option>
+                            <option val="USD">USD</option>
+                            <option val="EUR">EUR</option>
+                            <option val="GBP">GBP</option>
+                        </select>
+                    </div>
+                    <div className="col-3">
+                        <button className="btn btn-primary" type="button" onClick={this.saveHandler}>Save</button>
+                    </div>
                 </div>
             </div>
         )

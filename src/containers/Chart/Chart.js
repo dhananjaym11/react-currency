@@ -1,11 +1,26 @@
 import React from 'react';
 
+import './Chart.css';
 import { ENV } from "../../utility/constant";
+import LineChart from '../../components/LineChart/LineChart';
 
 class ChartContainer extends React.Component {
     state = {
         timeRange: 'week',
-        otherCurrency: 'USD'
+        otherCurrency: 'USD',
+        chartdata: [
+            // { date: '9 - 2 - 2020', amount: 1.1861 },
+            // { date: '9 - 3 - 2020', amount: 1.1813 },
+            // { date: '9 - 4 - 2020', amount: 1.1842 },
+            // { date: '9 - 5 - 2020', amount: 1.1824 },
+            // { date: '9 - 6 - 2020', amount: 1.1785 }
+
+            { date: 2, amount: 80 },
+            { date: 3, amount: 140 },
+            { date: 4, amount: 60 },
+            { date: 5, amount: 90 },
+            { date: 6, amount: 100 }
+        ]
     }
 
     changeHandler = (e) => {
@@ -58,34 +73,41 @@ class ChartContainer extends React.Component {
     }
 
     render() {
-        const { timeRange, otherCurrency } = this.state;
+        const { timeRange, otherCurrency, chartdata } = this.state;
         const preferredCurrency = localStorage.getItem('currency');
         return (
-            <div>
-                <h2>Chart</h2>
+            <div className="chart-page">
+                <h2 className="page-title">Chart</h2>
 
+                <div className="alert alert-light">Your preferred currency is {preferredCurrency}</div>
                 <form>
-                    <div className="form-group">
-                        <label>Preferred currency = {preferredCurrency}</label>
-                    </div>
-                    <div className="form-group">
-                        <label>Select other currency</label>
-                        <select className="form-control" onChange={this.changeHandler} name="otherCurrency" defaultValue={otherCurrency}>
-                            <option val="USD">USD</option>
-                            <option val="EUR">EUR</option>
-                            <option val="GBP">GBP</option>
-                        </select>
-                    </div>
-                    <div className="form-group">
-                        <select className="form-control" onChange={this.changeHandler} name="timeRange" defaultValue={timeRange}>
-                            <option value="week">Last week</option>
-                            <option value="month">Last month</option>
-                        </select>
-                    </div>
-                    <div>
-                        <button className="btn btn-primary" type="button" onClick={this.showHandler}>Show chart</button>
+                    <div className="row">
+                        <div className="form-group col-3">
+                            <label>Select other currency</label>
+                            <select className="form-control" onChange={this.changeHandler} name="otherCurrency" defaultValue={otherCurrency}>
+                                <option val="USD">USD</option>
+                                <option val="EUR">EUR</option>
+                                <option val="GBP">GBP</option>
+                            </select>
+                        </div>
+                        <div className="form-group col-3">
+                            <label>Select period</label>
+                            <select className="form-control" onChange={this.changeHandler} name="timeRange" defaultValue={timeRange}>
+                                <option value="week">Last week</option>
+                                <option value="month">Last month</option>
+                            </select>
+                        </div>
+                        <div className="form-group col-2">
+                            <label>&nbsp;</label>
+                            <button className="btn btn-primary" type="button" onClick={this.showHandler}>Show chart</button>
+                        </div>
                     </div>
                 </form>
+
+                <div>
+                    <LineChart orgWidth={400} orgHeight={350} data={chartdata} />
+                </div>
+
             </div>
         )
     }
