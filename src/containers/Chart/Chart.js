@@ -7,7 +7,6 @@ import LineChart from '../../components/LineChart/LineChart';
 class ChartContainer extends React.Component {
     state = {
         timeRange: 'week',
-        otherCurrency: 'USD',
         chartdata: null
     }
 
@@ -27,7 +26,7 @@ class ChartContainer extends React.Component {
 
     showHandler = () => {
         const preferredCurrency = localStorage.getItem('currency');
-        const { timeRange, otherCurrency } = this.state;
+        const { timeRange } = this.state;
         let diff = 0;
 
         if (timeRange === 'week') {
@@ -40,17 +39,37 @@ class ChartContainer extends React.Component {
         const startAt = this.formatDate(startDate);
         const endAt = this.formatDate(new Date());
 
-        fetch(`${ENV}history?base=${preferredCurrency}&symbols=${otherCurrency}&start_at=${startAt}&end_at=${endAt}`)
+        fetch(`${ENV}history?base=${preferredCurrency}&symbols=USD,EUR,GBP&start_at=${startAt}&end_at=${endAt}`)
             .then(res => res.json())
             .then(results => {
+                const { rates } = results;
+                const obj = {};
                 const chartValues = [];
-                Object.keys(results.rates).forEach(function (el) {
-                    chartValues.push({
-                        'date': new Date(el),
-                        'amount': results.rates[el][otherCurrency]
+                Object.keys(rates).forEach(function (date) {
+                    Object.keys(rates[date]).forEach(function (currency) {
+                        const newDate = new Date(date);
+                        if (obj[currency]) {
+                            obj[currency].push({
+                                date: newDate,
+                                amount: rates[date][currency]
+                            })
+                        } else {
+                            obj[currency] = [];
+                            obj[currency].push({
+                                date: newDate,
+                                amount: rates[date][currency]
+                            })
+                        }
                     })
-                })
-                chartValues.sort((a, b) => a.date - b.date);
+                });
+                Object.keys(obj).forEach(function (currency) {
+                    const sortedArr = obj[currency].sort((a, b) => a.date - b.date);
+                    chartValues.push({
+                        name: currency,
+                        values: sortedArr
+                    })
+                });
+
                 this.setState({
                     chartdata: chartValues
                 })
@@ -59,7 +78,7 @@ class ChartContainer extends React.Component {
     }
 
     render() {
-        const { timeRange, otherCurrency, chartdata } = this.state;
+        const { timeRange, chartdata } = this.state;
         const preferredCurrency = localStorage.getItem('currency');
         return (
             <div className="chart-page">
@@ -68,14 +87,14 @@ class ChartContainer extends React.Component {
                 <div className="alert alert-info">Your preferred currency is {preferredCurrency}</div>
                 <form>
                     <div className="row">
-                        <div className="form-group col-3">
+                        {/* <div className="form-group col-3">
                             <label>Select other currency</label>
                             <select className="form-control" onChange={this.changeHandler} name="otherCurrency" defaultValue={otherCurrency}>
                                 <option val="USD">USD</option>
                                 <option val="EUR">EUR</option>
                                 <option val="GBP">GBP</option>
                             </select>
-                        </div>
+                        </div> */}
                         <div className="form-group col-3">
                             <label>Select period</label>
                             <select className="form-control" onChange={this.changeHandler} name="timeRange" defaultValue={timeRange}>
@@ -92,7 +111,7 @@ class ChartContainer extends React.Component {
 
                 {chartdata &&
                     <div>
-                        <LineChart orgWidth={400} orgHeight={350} data={chartdata} />
+                        <LineChart orgWidth={600} orgHeight={350} data={chartdata} />
                     </div>}
 
             </div>

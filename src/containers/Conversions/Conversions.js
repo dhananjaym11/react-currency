@@ -45,7 +45,7 @@ class ConversionsContainer extends React.Component {
                             <input className="form-control" type="text" name="amount" onChange={this.changeHandler} value={amount} />
                         </div>
                         <div className="form-group col-3">
-                            <label>Select other currency</label>
+                            <label>Select conversions currency</label>
                             <select className="form-control" onChange={this.changeHandler} name="otherCurrency" defaultValue={otherCurrency}>
                                 <option val="USD">USD</option>
                                 <option val="EUR">EUR</option>
