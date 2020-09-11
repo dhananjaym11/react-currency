@@ -1,13 +1,15 @@
 import React from 'react';
 
-import './Chart.css';
+import './Chart.scss';
 import { ENV } from "../../utility/constant";
+import Loader from '../../components/Loader/Loader';
 import LineChart from '../../components/LineChart/LineChart';
 
 class ChartContainer extends React.Component {
     state = {
         timeRange: 'week',
-        chartdata: null
+        chartdata: null,
+        isShow: false
     }
 
     changeHandler = (e) => {
@@ -25,6 +27,10 @@ class ChartContainer extends React.Component {
     }
 
     showHandler = () => {
+        this.setState({
+            isShow: true
+        })
+
         const preferredCurrency = localStorage.getItem('currency');
         const { timeRange } = this.state;
         let diff = 0;
@@ -66,19 +72,20 @@ class ChartContainer extends React.Component {
                     const sortedArr = obj[currency].sort((a, b) => a.date - b.date);
                     chartValues.push({
                         name: currency,
-                        values: sortedArr
+                        values: sortedArr,
                     })
                 });
 
                 this.setState({
-                    chartdata: chartValues
+                    chartdata: chartValues,
+                    isShow: false
                 })
             })
             .catch(error => console.log(error));
     }
 
     render() {
-        const { timeRange, chartdata } = this.state;
+        const { timeRange, chartdata, isShow } = this.state;
         const preferredCurrency = localStorage.getItem('currency');
         return (
             <div className="chart-page">
@@ -113,6 +120,8 @@ class ChartContainer extends React.Component {
                     <div>
                         <LineChart orgWidth={600} orgHeight={350} data={chartdata} />
                     </div>}
+
+                <Loader isShow={isShow} />
 
             </div>
         )

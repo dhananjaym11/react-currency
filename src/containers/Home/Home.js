@@ -1,6 +1,6 @@
 import React from 'react';
 
-import './Home.css';
+import './Home.scss';
 
 class HomeContainer extends React.Component {
 

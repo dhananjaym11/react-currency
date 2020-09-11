@@ -1,17 +1,15 @@
 import React from 'react';
 
-import './Loader.css';
+import './Loader.scss';
 
-class Loader extends React.Component {
-    render() {
-        return (
-            <div
-                className="loader"
-                style={{ display: 'none' }}>
-                <div className="spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
-            </div>
-        )
-    }
+function Loader({ isShow }) {
+    return (
+        <div
+            className="loader"
+            style={{ display: isShow ? 'block' : 'none' }}>
+            <div className="spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+        </div>
+    )
 }
 
 export default Loader;

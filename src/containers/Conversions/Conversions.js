@@ -1,12 +1,14 @@
 import React from 'react';
 
 import { ENV } from "../../utility/constant";
+import Loader from '../../components/Loader/Loader';
 
 class ConversionsContainer extends React.Component {
     state = {
         amount: 0,
         otherCurrency: 'USD',
-        result: 0
+        result: 0,
+        isShow: false
     }
 
     changeHandler = (e) => {
@@ -16,6 +18,10 @@ class ConversionsContainer extends React.Component {
     }
 
     covertHandler = () => {
+        this.setState({
+            isShow: true
+        })
+
         const preferredCurrency = localStorage.getItem('currency');
         const { amount, otherCurrency } = this.state;
 
@@ -24,14 +30,15 @@ class ConversionsContainer extends React.Component {
             .then(results => {
                 const factor = results.rates[otherCurrency];
                 this.setState({
-                    result: (amount * factor).toFixed(2)
+                    result: (amount * factor).toFixed(2),
+                    isShow: false
                 })
             })
             .catch(error => console.log(error));
     }
 
     render() {
-        const { amount, otherCurrency, result } = this.state;
+        const { amount, otherCurrency, result, isShow } = this.state;
         const preferredCurrency = localStorage.getItem('currency');
 
         return (
@@ -64,6 +71,9 @@ class ConversionsContainer extends React.Component {
                         }
                     </div>
                 </form>
+
+                <Loader isShow={isShow} />
+
             </div>
         )
     }
