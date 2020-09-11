@@ -2,6 +2,7 @@ import React from 'react';
 
 import './Chart.scss';
 import { ENV } from "../../utility/constant";
+import { getLocalstorage } from '../../utility/functions';
 import Loader from '../../components/Loader/Loader';
 import LineChart from '../../components/LineChart/LineChart';
 
@@ -31,7 +32,7 @@ class ChartContainer extends React.Component {
             isShow: true
         })
 
-        const preferredCurrency = localStorage.getItem('currency');
+        const preferredCurrency = getLocalstorage('currency');
         const { timeRange } = this.state;
         let diff = 0;
 
@@ -86,7 +87,7 @@ class ChartContainer extends React.Component {
 
     render() {
         const { timeRange, chartdata, isShow } = this.state;
-        const preferredCurrency = localStorage.getItem('currency');
+        const preferredCurrency = getLocalstorage('currency');
         return (
             <div className="chart-page">
                 <h2 className="page-title">Chart</h2>

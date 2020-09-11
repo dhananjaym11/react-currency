@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { ENV } from "../../utility/constant";
+import { getLocalstorage } from '../../utility/functions';
 import Loader from '../../components/Loader/Loader';
 
 class ConversionsContainer extends React.Component {
@@ -22,7 +23,7 @@ class ConversionsContainer extends React.Component {
             isShow: true
         })
 
-        const preferredCurrency = localStorage.getItem('currency');
+        const preferredCurrency = getLocalstorage('currency');
         const { amount, otherCurrency } = this.state;
 
         fetch(`${ENV}latest?base=${preferredCurrency}&symbols=${otherCurrency}`)
@@ -39,7 +40,7 @@ class ConversionsContainer extends React.Component {
 
     render() {
         const { amount, otherCurrency, result, isShow } = this.state;
-        const preferredCurrency = localStorage.getItem('currency');
+        const preferredCurrency = getLocalstorage('currency');
 
         return (
             <div className="conversions-page">
@@ -65,7 +66,7 @@ class ConversionsContainer extends React.Component {
                         </div>
                         {result ?
                             <div className="form-group col-3">
-                                <label>Result:</label>
+                                <label>Result: (in {otherCurrency})</label>
                                 <h5 className="alert alert-success">{result}</h5>
                             </div> : null
                         }

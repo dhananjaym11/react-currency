@@ -1,6 +1,7 @@
 import React from 'react';
 
 import './Home.scss';
+import { getLocalstorage, setLocalstorage } from '../../utility/functions';
 
 class HomeContainer extends React.Component {
 
@@ -16,19 +17,17 @@ class HomeContainer extends React.Component {
     }
 
     saveHandler = () => {
-        localStorage.setItem('currency', this.state.currency);
+        setLocalstorage('currency', this.state.currency);
         this.setState({
             msg: 'Updated preferred currency'
         });
     }
 
     componentDidMount() {
-        const currency = localStorage.getItem('currency');
-        if (currency) {
-            this.setState({
-                currency
-            })
-        }
+        const currency = getLocalstorage('currency');
+        this.setState({
+            currency
+        })
     }
 
     render() {
